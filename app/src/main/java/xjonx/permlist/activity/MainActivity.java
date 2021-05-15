@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.text.method.LinkMovementMethod;
@@ -108,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         } catch (PackageManager.NameNotFoundException | IllegalArgumentException e) {
             Log.e(TAG, "Failed to get current permissions", e);
             ToastUtil.showToast(this,  R.string.permissions_failed, true, ColorUtil.Color.RED);
-            return;
         }
     }
 
