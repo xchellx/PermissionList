@@ -20,9 +20,7 @@ You can export all permissions in the list as a JSON file via `... -> Export Lis
 You can change the theme via `... -> Theme -> (Auto, Light, Dark)`.
 
 # Screenshots
-![Main App UI (Light Theme)](Screenshot_20210515-124216.png)
-
-![Main App UI (Dark Theme)](Screenshot_20210515-124059.png)
+<img src="Screenshot_20210515-124216.png" width="30%" height="30%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Screenshot_20210515-124059.png" width="30%" height="30%">
 
 # Building
 There are customizations to the `clean` task for gradle to delete the `release` and `debug` APK output directories.
