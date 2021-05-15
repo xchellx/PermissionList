@@ -37,3 +37,8 @@ The defualt configurations are fine although the Android Debug Key is used by de
 - Find out what and what isnt a revocable permission on your device.
 - Copy and export information displayed.
 - Light Theme and Dark Theme
+
+# Third Party Libraries
+- [FastScroll by L4 Digital](https://github.com/L4Digital/FastScroll)<a href=''></a>
+- [ExpandableFab by Nambi](https://github.com/nambicompany/expandable-fab)<a href=''></a>
+- [Gson by Google](https://github.com/google/gson)<a href=''></a></li>
