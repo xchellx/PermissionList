@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="permprog_show_duration">100</integer>
+    <integer name="permprog_hide_duration">100</integer>
+</resources>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="xjonx.permlist.activity.MainActivity"
+    android:id="@+id/fl_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top|start|left"
+    android:gravity="top|start|left"
+    android:orientation="vertical"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <xjonx.permlist.view.ThemableSwipeRefreshLayout
+        android:id="@+id/tsrl_permlist_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:colorBackground"
+        android:orientation="vertical"
+        android:theme="@style/Widget.PermissionList.ThemableSwipeRefreshLayout">
+
+        <com.l4digital.fastscroll.FastScrollView
+            android:id="@+id/fsv_permlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:theme="@style/Widget.PermissionList.FastScroller" />
+
+    </xjonx.permlist.view.ThemableSwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_permprog_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/permprog_height"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_tiny"
+        android:translationY="@dimen/permprog_heightoffs"
+        android:visibility="gone"
+        tools:translationY="0dp"
+        tools:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/pb_permprog"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/permprog_height"
+            android:max="1"
+            android:progress="0"
+            tools:max="100"
+            tools:progress="25" />
+
+    </LinearLayout>
+
+    <com.nambimobile.widgets.efab.ExpandableFabLayout
+        android:id="@+id/fab_filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|end|right">
+
+        <com.nambimobile.widgets.efab.Overlay
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:overlay_color="@android:color/black"
+            app:overlay_alpha="@dimen/disabled_alpha"
+            app:overlay_openingAnimationDurationMs="300"
+            app:overlay_closingAnimationDurationMs="250"/>
+
+        <com.nambimobile.widgets.efab.ExpandableFab
+            android:id="@+id/fab_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end|right"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            app:efab_color="?attr/colorSecondary"
+            app:efab_icon="@drawable/ic_filter"
+            app:efab_iconAnimationRotationDeg="0"
+            app:efab_closingAnticipateTension="0"
+            app:efab_firstFabOptionMarginPx="140.0"
+            app:efab_successiveFabOptionMarginPx="120.0"
+            app:efab_openingAnimationDurationMs="100"
+            app:efab_closingAnimationDurationMs="125"
+            app:label_visibleToHiddenAnimationDurationMs="125"
+            app:label_hiddenToVisibleAnimationDurationMs="100"
+            app:label_text="@string/fab_filter_title"
+            app:label_backgroundColor="?android:attr/colorBackground"
+            app:label_textColor="?attr/colorOnBackground"/>
+
+        <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fab_filter_permissionname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_color="?attr/colorSecondary"
+            app:fab_icon="@drawable/ic_radio_button_checked"
+            app:label_text="@string/fab_filter_permissionname_title"
+            app:label_backgroundColor="?attr/colorSecondaryVariant"
+            app:fab_openingAnimationDurationMs="100"
+            app:fab_closingAnimationDurationMs="125"
+            app:label_visibleToHiddenAnimationDurationMs="125"
+            app:label_hiddenToVisibleAnimationDurationMs="100"/>
+
+        <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fab_filter_packagename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_color="?attr/colorTertiary"
+            app:fab_icon="@drawable/ic_radio_button_unchecked"
+            app:label_text="@string/fab_filter_packagename_title"
+            app:label_backgroundColor="?attr/colorTertiaryVariant"
+            app:fab_openingAnimationDurationMs="100"
+            app:fab_closingAnimationDurationMs="125"
+            app:label_visibleToHiddenAnimationDurationMs="125"
+            app:label_hiddenToVisibleAnimationDurationMs="100"/>
+
+        <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fab_filter_isrevocable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_color="?attr/colorPrimary"
+            app:fab_icon="@drawable/ic_check_box_outline"
+            app:label_text="@string/fab_filter_isrevocable_title"
+            app:label_backgroundColor="?attr/colorPrimaryVariant"
+            app:fab_openingAnimationDurationMs="100"
+            app:fab_closingAnimationDurationMs="125"
+            app:label_visibleToHiddenAnimationDurationMs="125"
+            app:label_hiddenToVisibleAnimationDurationMs="100"/>
+
+    </com.nambimobile.widgets.efab.ExpandableFabLayout>
+
+</FrameLayout>

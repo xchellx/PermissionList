@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/permlist_item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/permlist_item_height"
+    android:layout_margin="@dimen/margin_small"
+    android:foreground="?android:selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/permlist_item_height"
+        android:padding="@dimen/margin_small"
+        android:orientation="vertical"
+        android:gravity="start|center">
+
+        <TextView
+            android:id="@+id/permlist_item_permname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/permlist_item_permname_size"
+            android:textStyle="bold"
+            tools:text="Permission Name"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_tiny"
+            android:gravity="start|center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_tiny"
+                android:layout_marginRight="@dimen/margin_tiny"
+                android:text="@string/permlist_item_packagenameprefix"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="@dimen/permlist_item_packagename_size"
+                android:textStyle="italic"/>
+
+            <ImageView
+                android:id="@+id/permlist_item_packageicon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="@dimen/margin_tiny"
+                android:layout_marginRight="@dimen/margin_tiny"
+                android:scaleType="fitXY"
+                app:srcCompat="@mipmap/ic_launcher_round" />
+
+            <TextView
+                android:id="@+id/permlist_item_packagename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="@dimen/permlist_item_packagename_size"
+                android:textStyle="italic"
+                tools:text="Package Name"/>
+
+            <TextView
+                android:id="@+id/permlist_item_isrevocable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:gravity="end|center"
+                android:text="@string/permlist_item_revocable_title"
+                android:textColor="?attr/colorError"
+                android:textSize="@dimen/permlist_item_rovocable_size"
+                android:textStyle="bold"
+                tools:visibility="visible"
+                tools:text="REVOCABLE"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY app_name "Permission List">
+    <!ENTITY app_author "Yonder">
+    <!ENTITY permlist_item_revocable_title "REVOCABLE">
+]>
+<resources>
+    <string name="app_name">&app_name;</string>
+    <string name="app_author">&app_author;</string>
+    <string name="options_search_title">Search</string>
+    <string name="options_search_hint">Search for permissions…</string>
+    <string name="options_about_title">About</string>
+    <string name="options_export_title">Export List</string>
+    <string name="options_bugreport_title">Send Bug Report</string>
+    <string name="options_theme_title">Theme</string>
+    <string name="options_theme_auto_title">Auto</string>
+    <string name="options_theme_light_title">Light</string>
+    <string name="options_theme_dark_title">Dark</string>
+    <string name="fab_filter_title">Filter</string>
+    <string name="fab_filter_isrevocable_title">Is Revocable</string>
+    <string name="fab_filter_packagename_title">Package Name</string>
+    <string name="fab_filter_permissionname_title">Permission Name</string>
+    <string name="about_dialog_title">About</string>
+    <string name="about_dialog_message">"<![CDATA[<h4>]]>&app_name;<![CDATA[ by ]]>&app_author;<![CDATA[</h4>
+<div>
+    <h9>]]>&app_name;<![CDATA[ displays every permission declared by every app installed on your device. </br>
+    The permissions that are listed are declared by the displayed app. These permissions are </br>
+    <strong>not</strong> displayed as they are <strong>used</strong> by each app, only as </br>
+    they are <strong>declared</strong> by each app. This is helpful on scoping out all the </br>
+    permissions that are usable on your device and whether they are revocable. ]]>&app_name;<![CDATA[</br>
+    is <strong>not</strong> an app manager.</h9>
+</div>
+<br>
+<h4>What is ']]>&permlist_item_revocable_title;<![CDATA['?</h4>
+<div>
+    <h9>If a listed permission has a <strong><font color='colorError'>]]>&permlist_item_revocable_title;<![CDATA[</font></strong> tag </br>
+    it means the permission is revocable from an app if it is using that permission. This </br>
+    means you can deny this permission from the app via App Settings or adb.</h9>
+</div>
+<br>
+<h4>Third Party Libraries</h4>
+<div>
+    <h9><ul>
+        <li>&nbsp;&nbsp;<a href='https://github.com/L4Digital/FastScroll'>FastScroll by L4 Digital</a></li>
+        <li>&nbsp;&nbsp;<a href='https://github.com/nambicompany/expandable-fab'>ExpandableFab by Nambi</a></li>
+        <li>&nbsp;&nbsp;<a href='https://github.com/google/gson'>Gson by Google</a></li>
+        <li>&nbsp;&nbsp;<a href='https://github.com/JohnyDaDeveloper/AndroidAsync'>AndroidAsync by JohnyDaDeveloper</a></li>
+    </ul></h9>
+</div>]]>"</string>
+    <string name="layout_failed">Failed to load app user interface. Please restart the app and try again.</string>
+    <string name="permissions_failed">Something went wrong requesting for required permissions. Please restart the app and try again.</string>
+    <string name="permissions_revoked">The requested permissions are required for this app to function. Please accept the permissions from settings and restart the app.</string>
+    <string name="permission_copied">Permission information copied to the clipboard.</string>
+    <string name="export_started">Exporting permissions to JSON file…</string>
+    <string name="export_failed">Failed to export permissions to JSON file. Reason: %s</string>
+    <string name="export_success">Permissions successfully exported to JSON file.</string>
+    <string name="bugreport_sharetitle">Share bug report</string>
+    <string name="bugreport_started">Gathering bug report…</string>
+    <string name="bugreport_failed">Failed to gather bug report. Reason: %s</string>
+    <string name="bugreport_success">Successfully gathered bug report.</string>
+    <string name="permlist_item_packagenameprefix">Defined by:</string>
+    <string name="permlist_item_revocable_title">&permlist_item_revocable_title;</string>
+</resources>

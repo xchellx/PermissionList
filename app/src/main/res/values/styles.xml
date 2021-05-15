@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <!--Components-->
+
+    <!--Bottom Sheets-->
+    <style name="ThemeOverlay.PermissionList.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.PermissionList.BottomSheet.Modal</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.PermissionList.BottomSheet.Modal</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">@android:color/transparent</item>
+    </style>
+    <style name="Widget.PermissionList.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearanceOverlay">?attr/shapeAppearanceLargeComponent</item>
+    </style>
+
+    <!--Navigation Drawer-->
+    <style name="Widget.PermissionList.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextAppearance">?attr/textAppearanceBody2</item>
+    </style>
+
+    <!--FastScroller-->
+    <style name="Base.Widget.PermissionList.FastScroller" parent="Theme.PermissionList">
+        <item name="hideScrollbar">true</item>
+        <item name="showBubble">true</item>
+        <item name="showTrack">true</item>
+        <item name="bubbleSize">small</item>
+    </style>
+
+    <!--ThemableSwipeRefreshLayout-->
+    <style name="Base.Widget.PermissionList.ThemableSwipeRefreshLayout" parent="Theme.PermissionList"/>
+
+    <!-- For Android 11 compatible custom toast -->
+    <style name="TextAppearance">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textColorHighlight">?android:textColorHighlight</item>
+        <item name="android:textColorHint">?android:textColorHint</item>
+        <item name="android:textColorLink">?android:textColorLink</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <!-- For Android 11 compatible custom toast -->
+    <style name="TextAppearance.Toast">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>

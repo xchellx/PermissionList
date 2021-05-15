@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ThemableSwipeRefreshLayout">
+        <attr format="color" name="progressBackgroundColor"/>
+        <attr format="color" name="progressColor1"/>
+        <attr format="color" name="progressColor2"/>
+        <attr format="color" name="progressColor3"/>
+        <attr format="color" name="progressColor4"/>
+    </declare-styleable>
+    <declare-styleable name="Theme">
+        <attr format="color" name="colorTertiary"/>
+        <attr format="color" name="colorTertiaryVariant"/>
+        <attr format="color" name="colorOnTertiary"/>
+    </declare-styleable>
+</resources>

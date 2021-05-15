@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_corner_radius">4dp</dimen>
+    <dimen name="permprog_height">18dp</dimen>
+    <dimen name="permprog_heightoffs">-18dp</dimen>
+    <dimen name="permlist_item_height">82dp</dimen>
+    <dimen name="permlist_item_permname_size">12sp</dimen>
+    <dimen name="permlist_item_packagename_size">10sp</dimen>
+    <dimen name="permlist_item_rovocable_size">10sp</dimen>
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_huge">64dp</dimen>
+    <dimen name="disabled_alpha">0.75</dimen>
+</resources>
