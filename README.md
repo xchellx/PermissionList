@@ -18,6 +18,10 @@ For every build after debugging, run clean first, then run the APK build and it 
 The build should be simple as Android Studio's `Build -> Geneate Signed Bundle/APK...`. 
 The defualt configurations are fine although the Android Debug Key is used by default (this was for testing) so you might want to use your own key.
 
+# TODO:
+- Replace deprecated AsyncTask with concurrent classes or migrate to [AndroidAsync](https://github.com/JohnyDaDeveloper/AndroidAsync) replacement.
+- Move activity view to fragment-based model
+
 # Usage
 - A list of permissions defined by every app will be loaded upon app initialization.
 - You can refresh this list at any time by pulling down on the list.
@@ -38,6 +42,6 @@ The defualt configurations are fine although the Android Debug Key is used by de
 <img src="Screenshot_20210515-124216.png" width="30%" height="30%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="Screenshot_20210515-124059.png" width="30%" height="30%">
 
 # Third Party Libraries
-- [FastScroll by L4 Digital](https://github.com/L4Digital/FastScroll)<a href=''></a>
-- [ExpandableFab by Nambi](https://github.com/nambicompany/expandable-fab)<a href=''></a>
-- [Gson by Google](https://github.com/google/gson)<a href=''></a></li>
+- [FastScroll by L4 Digital](https://github.com/L4Digital/FastScroll)
+- [ExpandableFab by Nambi](https://github.com/nambicompany/expandable-fab)
+- [Gson by Google](https://github.com/google/gson)
