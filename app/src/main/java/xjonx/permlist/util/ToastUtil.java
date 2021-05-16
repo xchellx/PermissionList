@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.BlendModeColorFilterCompat;
@@ -45,7 +46,7 @@ public class ToastUtil {
      * @param msg The message to show within the Toast.
      * @param clr The color to show the Toast in. Color resource int is not supported here, use {@link Context#getColor} instead.
      */
-    public static void showToast(@NonNull Context ctx, @Nullable String msg, int clr) {
+    public static void showToast(@NonNull Context ctx, @Nullable String msg, @ColorInt int clr) {
         showToast(ctx, msg, false, clr);
     }
 
@@ -56,7 +57,7 @@ public class ToastUtil {
      * @param id A resource ID for a string
      * @param clr The color to show the Toast in. Color resource int is not supported here, use {@link Context#getColor} instead.
      */
-    public static void showToast(@NonNull Context ctx, int id, int clr) {
+    public static void showToast(@NonNull Context ctx, int id, @ColorInt int clr) {
         showToast(ctx, id, false, clr);
     }
 
@@ -90,7 +91,7 @@ public class ToastUtil {
      * @param lng The length to show the Toast for. True for long a amount of time, false for a short amount of time
      * @param clr The color to show the Toast in. Color resource int is not supported here, use {@link Context#getColor} instead.
      */
-    public static void showToast(@NonNull Context ctx, int id, boolean lng, int clr) {
+    public static void showToast(@NonNull Context ctx, int id, boolean lng, @ColorInt int clr) {
         showToast(ctx, ctx.getString(id), lng, clr);
     }
 
@@ -103,7 +104,7 @@ public class ToastUtil {
      * @param clr The color to show the Toast in. Color resource int is not supported here, use {@link Context#getColor} instead.
      */
     @SuppressWarnings("deprecation")
-    public static void showToast(@NonNull Context ctx, @Nullable String msg, boolean lng, int clr) {
+    public static void showToast(@NonNull Context ctx, @Nullable String msg, boolean lng, @ColorInt int clr) {
         Toast toast;
         View toastView;
         TextView toastTextView;

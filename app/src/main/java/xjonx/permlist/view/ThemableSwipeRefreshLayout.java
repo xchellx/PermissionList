@@ -11,11 +11,21 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import xjonx.permlist.R;
 import xjonx.permlist.util.ColorUtil;
 
+/**
+ * This is a {@link SwipeRefreshLayout} but themable by xml.
+ * {@inheritDoc}
+ */
 public class ThemableSwipeRefreshLayout extends SwipeRefreshLayout {
+    /**
+     * {@inheritDoc}
+     */
     public ThemableSwipeRefreshLayout(@NonNull Context context) {
         super(context);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public ThemableSwipeRefreshLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         final TypedArray a = context.obtainStyledAttributes(attrs, new int[]{

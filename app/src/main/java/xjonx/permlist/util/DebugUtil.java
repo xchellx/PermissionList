@@ -22,8 +22,8 @@ public class DebugUtil {
     /**
      * Get full stack trace from an exception as a string.
      *
-     * @param th A throwable exception, error, or any other exception or error related object
-     * @return The full stack trace from the throwable exception, error, or any other exception related object
+     * @param th A throwable exception, error, or any other throwable object
+     * @return The full stack trace from the throwable exception, error, or any other throwable object
      */
     public static @NonNull String getStackTrace(@Nullable Throwable th) {
         if (th != null) {
@@ -83,9 +83,9 @@ public class DebugUtil {
 
     /**
      * Get the logcat of the current application. This runs the "logcat" utility internally by using
-     * {@link Runtime#getRuntime} and {@link Runtime#exec(String)} which may lead to undefined behavior.
+     * {@link Runtime#getRuntime} and {@link Runtime#exec(String)} which may lead to undefined behavior
      * in unaccounted for situations.
-     * @return The logcat of the current application, represented as a string.
+     * @return The logcat of the current application, represented as a {@link String}.
      */
     public static @NonNull String getLogcat() {
         StringBuilder log = new StringBuilder();

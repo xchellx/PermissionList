@@ -7,10 +7,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PermissionInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.text.method.LinkMovementMethod;
@@ -43,13 +40,12 @@ import com.nambimobile.widgets.efab.FabOption;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Objects;
 
 import xjonx.permlist.PermissionListAdapter;
+import xjonx.permlist.PermissionListTask;
 import xjonx.permlist.R;
 import xjonx.permlist.util.DebugUtil;
 import xjonx.permlist.util.FileUtil;
@@ -61,41 +57,41 @@ import xjonx.permlist.util.PermissionUtil;
 import xjonx.permlist.util.ToastUtil;
 import xjonx.permlist.view.ThemableSwipeRefreshLayout;
 
-public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback,
+public class PermissionListActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback,
         SearchView.OnQueryTextListener, PermissionListAdapter.OnFilterOptionsUpdatedListener, PermissionListAdapter.OnListItemClickListener {
-    public static final @NonNull String TAG = MainActivity.class.getName();
+    public static final @NonNull String TAG = PermissionListActivity.class.getName();
     public static final int REQUESTCODE_EXPORTJSON = 200;
 
     // Layout fields
     private FrameLayout fl_main;
-    private ThemableSwipeRefreshLayout tsrl_permlist_container;
-    private FastScrollView fsv_permlist;
+    public volatile ThemableSwipeRefreshLayout tsrl_permlist_container;
+    private volatile FastScrollView fsv_permlist;
     private LinearLayout ll_permprog_container;
-    private ProgressBar pb_permprog;
-    private ExpandableFabLayout fab_filter_layout;
-    private ExpandableFab fab_filter;
-    private FabOption fab_filter_permissionname;
-    private FabOption fab_filter_packagename;
-    private FabOption fab_filter_isrevocable;
+    public volatile ProgressBar pb_permprog;
+    public volatile ExpandableFabLayout fab_filter_layout;
+    public volatile ExpandableFab fab_filter;
+    public volatile FabOption fab_filter_permissionname;
+    public volatile FabOption fab_filter_packagename;
+    public volatile FabOption fab_filter_isrevocable;
 
     // Class fields
-    private final @NonNull ArrayList<PermissionListAdapter.ListItem> permList = new ArrayList<>();
-    private final @NonNull PermissionListAdapter permListAdp = new PermissionListAdapter(permList,
+    public final @NonNull ArrayList<PermissionListAdapter.ListItem> permList = new ArrayList<>();
+    public final @NonNull PermissionListAdapter permListAdp = new PermissionListAdapter(permList,
             EnumSet.of(PermissionListAdapter.FilterOptions.PERMISSION), this, this);
     private LinearLayoutManager fsv_permlist_manager;
-    private Animator permprogShowAnim;
-    private Animator permprogHideAnim;
-    private boolean refreshIsRunning = false;
+    public volatile Animator permprogShowAnim;
+    public volatile Animator permprogHideAnim;
+    private volatile boolean refreshIsRunning = false;
     private @NonNull String queryCache = "";
-    private @Nullable PermissionListTask permListTask = null;
-    private boolean isSharing = false;
+    private volatile @Nullable PermissionListTask permListTask = null;
+    private volatile boolean isSharing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         try {
-            setContentView(R.layout.activity_main);
+            setContentView(R.layout.activity_permlist);
         } catch (Throwable e) {
             Log.e(TAG, "Failed to initialize layout", e);
             ToastUtil.showToast(this,  R.string.layout_failed, true, ColorUtil.Color.RED);
@@ -114,14 +110,14 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     @Override
     protected void onStop() {
-        deinitialize();
+        deinitialize(true);
 
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        deinitialize();
+        deinitialize(false);
 
         super.onDestroy();
     }
@@ -147,29 +143,29 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
         if (FlagUtil.isFlagSet(requestCode, (FileUtil.REQUESTCODE_CREATESAFFILE | REQUESTCODE_EXPORTJSON))) {
             if (resultCode == RESULT_OK && data != null) {
-                ToastUtil.showToast(MainActivity.this, getString(R.string.export_started), false, ColorUtil.Color.BLUE);
+                ToastUtil.showToast(PermissionListActivity.this, getString(R.string.export_started), false, ColorUtil.Color.BLUE);
                 // Save asynchronously
                 new Thread(() -> {
-                    try (final ParcelFileDescriptor fd = MainActivity.this.getContentResolver().openFileDescriptor(data.getData(), "w")) {
+                    try (final ParcelFileDescriptor fd = PermissionListActivity.this.getContentResolver().openFileDescriptor(data.getData(), "w")) {
                         try (final FileWriter writer = new FileWriter(fd.getFileDescriptor())) {
                             new GsonBuilder()
                                     .excludeFieldsWithoutExposeAnnotation()
                                     .registerTypeAdapter(PermissionListAdapter.ListItem.class, new PermissionListAdapter.ListItem.Serializer())
                                     .setPrettyPrinting()
                                     .create()
-                                    .toJson(MainActivity.this.permList, writer);
-                            MainActivity.this.runOnUiThread(() -> ToastUtil.showToast(MainActivity.this,  R.string.export_success,
+                                    .toJson(PermissionListActivity.this.permList, writer);
+                            PermissionListActivity.this.runOnUiThread(() -> ToastUtil.showToast(PermissionListActivity.this,  R.string.export_success,
                                     false, ColorUtil.Color.BLUE));
                         } catch (final Exception e) {
-                            MainActivity.this.runOnUiThread(() -> {
+                            PermissionListActivity.this.runOnUiThread(() -> {
                                 Log.e(TAG, "Failed to export permission list.", e);
-                                ToastUtil.showToast(MainActivity.this,  String.format(getString(R.string.export_failed),
+                                ToastUtil.showToast(PermissionListActivity.this,  String.format(getString(R.string.export_failed),
                                         e.getMessage()), true, ColorUtil.Color.RED);
                             });
                         }
                     } catch (IOException | JsonIOException e) {
                         Log.e(TAG, "Failed to export permission list.", e);
-                        ToastUtil.showToast(MainActivity.this,  String.format(getString(R.string.export_failed), e.getMessage()),
+                        ToastUtil.showToast(PermissionListActivity.this,  String.format(getString(R.string.export_failed), e.getMessage()),
                                 true, ColorUtil.Color.RED);
                     }
                 }).start();
@@ -226,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                     // We must notify ActionView has collapsed for setQuery/getQuery to stay
                     options_search_action.onActionViewExpanded();
                     options_search_action.setQuery(queryCache, false);
-                    options_search_action.setOnQueryTextListener(MainActivity.this);
+                    options_search_action.setOnQueryTextListener(PermissionListActivity.this);
                     permListAdp.filter(permList, queryCache);
                     fsv_permlist_manager.scrollToPositionWithOffset(0, 0);
                 }
@@ -283,24 +279,24 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                         .setMovementMethod(LinkMovementMethod.getInstance());
                 return true;
             case R.id.options_export:
-                FileUtil.createSAFFile(this, REQUESTCODE_EXPORTJSON, FileUtil.getDateFileName(MainActivity.this,
+                FileUtil.createSAFFile(this, REQUESTCODE_EXPORTJSON, FileUtil.getDateFileName(PermissionListActivity.this,
                         "permissionlist", ".json"), "application/json");
                 return true;
             case R.id.options_bugreport:
-                ToastUtil.showToast(MainActivity.this, getString(R.string.bugreport_started), false, ColorUtil.Color.BLUE);
+                ToastUtil.showToast(PermissionListActivity.this, getString(R.string.bugreport_started), false, ColorUtil.Color.BLUE);
                 new Thread(() -> {
                     try {
                         final String logcat = DebugUtil.getLogcat();
-                        MainActivity.this.runOnUiThread(() -> ToastUtil.showToast(MainActivity.this, getString(R.string.bugreport_success),
+                        PermissionListActivity.this.runOnUiThread(() -> ToastUtil.showToast(PermissionListActivity.this, getString(R.string.bugreport_success),
                                 false, ColorUtil.Color.BLUE));
-                        FileUtil.shareCacheFileText(MainActivity.this, MainActivity.this.getString(R.string.bugreport_sharetitle),
-                                FileUtil.getDateFileName(MainActivity.this, "bugreport", ".txt"), logcat);
-                        MainActivity.this.runOnUiThread(() -> MainActivity.this.isSharing = true);
+                        FileUtil.shareCacheFileText(PermissionListActivity.this, PermissionListActivity.this.getString(R.string.bugreport_sharetitle),
+                                FileUtil.getDateFileName(PermissionListActivity.this, "bugreport", ".txt"), logcat);
+                        PermissionListActivity.this.runOnUiThread(() -> PermissionListActivity.this.isSharing = true);
                     } catch (final IOException e) {
-                        MainActivity.this.runOnUiThread(() -> {
+                        PermissionListActivity.this.runOnUiThread(() -> {
                             Log.e(TAG, "Failed to send logcat.", e);
-                            ToastUtil.showToast(MainActivity.this,  String.format(
-                                    MainActivity.this.getString(R.string.bugreport_failed),
+                            ToastUtil.showToast(PermissionListActivity.this,  String.format(
+                                    PermissionListActivity.this.getString(R.string.bugreport_failed),
                                     e.getMessage()), true, ColorUtil.Color.RED);
                         });
                     }
@@ -444,29 +440,35 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         pb_permprog.post(new Runnable() {
             @Override
             public void run() {
-                permListTask = (PermissionListTask) new PermissionListTask(MainActivity.this).execute();
+                permListTask = (PermissionListTask) new PermissionListTask(PermissionListActivity.this).execute();
                 pb_permprog.removeCallbacks(this);
             }
         });
     }
 
-    private void deinitialize() {
+    private void deinitialize(boolean isDestroyed) {
         if (isSharing) {
             isSharing = false;
         } else {
+            // Delete cache on app exit
             new Thread(() -> {
                 try {
                     if (getCacheDir().exists()) {
                         FileUtil.deleteDirectory(getCacheDir());
                     }
                 } catch (SecurityException e) {
-                    MainActivity.this.runOnUiThread(() -> Log.e(TAG, "Failed to clear cache directory.", e));
+                    PermissionListActivity.this.runOnUiThread(() -> Log.e(TAG, "Failed to clear cache directory.", e));
                 }
             }).start();
         }
-        if (permListTask != null) {
-            permListTask.cancel(true);
-            permListTask = null;
+        // Cancel refresh task if it is running
+        if (permListTask != null && refreshIsRunning) {
+            if (!permListTask.isCancelled()) {
+                setRefreshIsRunning(false);
+                permListTask.setSearchUIDisabledStatus(false);
+                permListTask.cancel(true);
+                permListTask = null;
+            }
         }
     }
 
@@ -497,128 +499,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             fab_filter_isrevocable.setFabOptionIcon(ContextCompat.getDrawable(this, R.drawable.ic_check_box));
         } else {
             fab_filter_isrevocable.setFabOptionIcon(ContextCompat.getDrawable(this, R.drawable.ic_check_box_outline));
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    private static class PermissionListTask extends AsyncTask<Void, Integer, ArrayList<PermissionListAdapter.ListItem>> {
-        private final @NonNull WeakReference<MainActivity> _this;
-
-        public PermissionListTask(@Nullable MainActivity p_this) { _this = new WeakReference<>(p_this); }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            if (_this.get() != null) {
-                // Enable search status and disable UI
-                setSearchUIDisabledStatus(true);
-            } else {
-                Log.e(PermissionListTask.class.getName(), "Failed to run AsyncTask, _this is null");
-            }
-        }
-
-        @Override
-        protected ArrayList<PermissionListAdapter.ListItem> doInBackground(Void... params) {
-            if (_this.get() != null && !isCancelled()) {
-                final ArrayList<PermissionListAdapter.ListItem> permRslt = new ArrayList<>();
-                // Get all installed packages
-                final List<PackageInfo> pckgs = _this.get().getPackageManager().getInstalledPackages(PackageManager.GET_META_DATA);
-                final int pckgsSize = pckgs.size();
-                int pckgsProgress = 0;
-                for (PackageInfo pckgInf : pckgs) {
-                    // Get all permissions that each package declares.
-                    PermissionInfo[] perms;
-                    try {
-                        perms = PermissionUtil.getPermissions(_this.get(), pckgInf.packageName);
-                    } catch (PackageManager.NameNotFoundException e) {
-                        // Would log exception here but it doesn't matter in the long run. Also, logging is UI operation
-                        // so to avoid slowing down task, there is no logging)
-                        perms = new PermissionInfo[0];
-                    }
-                    // Go through each package permission and add it (along whether it is revocable)
-                    for (PermissionInfo perm : perms) {
-                        permRslt.add(new PermissionListAdapter.ListItem(perm.name,
-                                ((perm.protectionLevel & PermissionInfo.PROTECTION_MASK_BASE) == PermissionInfo.PROTECTION_DANGEROUS),
-                                pckgInf.packageName, pckgInf.applicationInfo.loadIcon(_this.get().getPackageManager())));
-                    }
-                    // Update progress
-                    publishProgress(++pckgsProgress, pckgsSize);
-                }
-                return permRslt;
-            } else {
-                return new ArrayList<>();
-            }
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-
-            if (_this.get() != null) {
-                // Set max progress for progress bar
-                _this.get().pb_permprog.setMax(values[1]);
-                // Increase progress bar progress
-                _this.get().pb_permprog.setProgress(values[0]);
-            } else {
-                Log.e(PermissionListTask.class.getName(), "Failed to run AsyncTask, _this is null");
-            }
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<PermissionListAdapter.ListItem> result) {
-            super.onPostExecute(result);
-
-            if (_this.get() != null) {
-                // Update list
-                _this.get().permList.clear();
-                _this.get().permList.addAll(result);
-                _this.get().permListAdp.replaceAll(_this.get().permList);
-                _this.get().permListAdp.filter(_this.get().permList);
-                // Disable search status and enable UI
-                setSearchUIDisabledStatus(false);
-
-                // Clear references explicitly
-                _this.clear();
-            } else {
-                Log.e(PermissionListTask.class.getName(), "Failed to run AsyncTask, _this is null");
-            }
-        }
-
-        private void setSearchUIDisabledStatus(boolean enabledStatus) {
-            if (enabledStatus) {
-                // Reset progress bar progress
-                _this.get().pb_permprog.setProgress(0);
-                _this.get().pb_permprog.setMax(1);
-                // Start loading anim
-                _this.get().tsrl_permlist_container.setRefreshing(true);
-                // Disable filter fabs
-                if (_this.get().fab_filter_layout.isOpen()) {
-                    _this.get().fab_filter_layout.close();
-                }
-                _this.get().fab_filter_permissionname.setFabOptionEnabled(false);
-                _this.get().fab_filter_packagename.setFabOptionEnabled(false);
-                _this.get().fab_filter_isrevocable.setFabOptionEnabled(false);
-                _this.get().fab_filter.setEfabEnabled(false);
-                // Show progress bar
-                _this.get().permprogShowAnim.start();
-                // Disable menu options and stop any current searches
-                _this.get().setRefreshIsRunning(true);
-            } else {
-                // Enable menu options and stop any current searches
-                _this.get().setRefreshIsRunning(false);
-                // Stop loading anim
-                _this.get().tsrl_permlist_container.setRefreshing(false);
-                // Enable filter fabs
-                _this.get().fab_filter_permissionname.setFabOptionEnabled(true);
-                _this.get().fab_filter_packagename.setFabOptionEnabled(true);
-                _this.get().fab_filter_isrevocable.setFabOptionEnabled(true);
-                _this.get().fab_filter.setEfabEnabled(true);
-                // Fix filter fab icon theme being reset
-                _this.get().fixTheme();
-                // Hide progress bar
-                _this.get().permprogHideAnim.start();
-            }
         }
     }
 }
